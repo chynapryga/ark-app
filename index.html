@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f4d36">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<title>ARKA – Arkara Info & Aksi</title>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
+<style>
+:root{--bg:#f1efe8;--card:#fff;--ink:#1d2a22;--mute:#6b7469;--forest:#1f4d36;--forest2:#2f6b4a;--stone:#d9d6cc;--acc:#e8872b;--yel:#f2c14e;--line:#e2dfd4;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a16;--card:#1e2721;--ink:#ecebe3;--mute:#a1a99d;--stone:#3a443d;--line:#2c362f;--forest:#143325}}
+:root[data-theme="dark"]{--bg:#141a16;--card:#1e2721;--ink:#ecebe3;--mute:#a1a99d;--stone:#3a443d;--line:#2c362f;--forest:#143325}
+html,body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--forest);z-index:60}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--forest);color:#fff}
+main{padding:14px 14px 96px;max-width:640px;margin:0 auto}
+.tab{display:none}.tab.on{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+h2.t{font-weight:800;font-size:1.05rem;margin:18px 2px 8px;display:flex;gap:8px;align-items:center}
+h2.t i,h2.t svg{color:var(--acc);width:18px;height:18px}
+.mute{color:var(--mute);font-size:.82rem}
+.btn{background:var(--forest2);color:#fff;border-radius:14px;padding:11px 16px;font-weight:700;font-size:.9rem;display:inline-flex;gap:8px;align-items:center;justify-content:center;transition:transform .1s}
+.btn:active{transform:scale(.97)}.btn.o{background:var(--acc)}.btn.g{background:transparent;color:var(--forest2);border:1.5px solid var(--forest2)}
+.inp{width:100%;background:var(--bg);border:1.5px solid var(--stone);border-radius:12px;padding:10px 12px;color:var(--ink);font-size:.92rem;margin-top:4px}
+.inp:focus{outline:none;border-color:var(--acc)}
+label{font-size:.78rem;font-weight:700;color:var(--mute);display:block;margin-top:10px}
+.chip{padding:6px 14px;border-radius:99px;border:1.5px solid var(--stone);font-size:.8rem;font-weight:700;white-space:nowrap;color:var(--mute)}
+.chip.on{background:var(--forest2);border-color:var(--forest2);color:#fff}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 16px rgba(0,0,0,.08)}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.66rem;font-weight:700;color:var(--mute);padding:4px 0;position:relative}
+nav button svg{width:22px;height:22px}
+nav button.on{color:var(--forest2)}
+nav button.on::before{content:"";position:absolute;top:-7px;width:28px;height:3px;border-radius:3px;background:var(--acc)}
+.ph{height:110px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;margin-bottom:10px}
+.tl{border-left:3px solid var(--stone);margin-left:8px;padding-left:18px}
+.tl>div{position:relative;margin-bottom:16px}
+.tl>div::before{content:"";position:absolute;left:-26px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--acc);border:3px solid var(--bg)}
+details{border-bottom:1px solid var(--line);padding:10px 0}summary{font-weight:700;font-size:.9rem;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:12px;font-size:.84rem;z-index:80;max-width:88%;animation:in .3s}
+.badge{font-size:.68rem;font-weight:800;padding:2px 8px;border-radius:8px;background:var(--yel);color:#3a2d00}
+</style>
+</head>
+<body>
+<header>
+  <div class="flex items-center gap-3 px-4 py-3 max-w-[640px] mx-auto">
+    <img id="logo" alt="ARKA" class="w-10 h-10 rounded-full object-cover border-2" style="border-color:var(--yel)" src="https://i.ibb.co/DH2mNw71/Save-Clip-App-342154505-209011668504750-8031241953731727761-n.jpg">
+    <div class="leading-tight"><div class="font-extrabold tracking-widest text-lg">ARKA</div><div class="text-[11px] opacity-80">Arkara Info &amp; Aksi</div></div>
+    <span id="adminTag" class="badge ml-auto hidden">ADMIN</span>
+  </div>
+</header>
+<main>
+<!-- BERANDA -->
+<section id="t-home" class="tab on">
+  <div class="card text-white border-0" style="background:linear-gradient(135deg,#1f4d36,#2f6b4a 60%,#6b8f4e)">
+    <div class="flex justify-between items-start">
+      <div><div class="text-xs opacity-80 flex items-center gap-1"><i data-lucide="map-pin" style="width:13px;height:13px"></i><span id="wLoc">Bandung, Jawa Barat</span></div>
+      <div class="text-5xl font-extrabold mt-1"><span id="wTemp">--</span>°</div>
+      <div class="font-semibold" id="wDesc">Memuat cuaca…</div></div>
+      <div class="text-6xl" id="wIcon">⛅</div>
+    </div>
+    <div class="flex gap-4 mt-3 text-xs opacity-90"><span>💨 <b id="wWind">--</b> km/j</span><span>💧 <b id="wHum">--</b>%</span><span id="wSrc" class="ml-auto opacity-70"></span></div>
+  </div>
+  <h2 class="t"><i data-lucide="megaphone"></i>Info Terkini</h2>
+  <div id="newsList"></div>
+</section>
+
+<!-- KEGIATAN -->
+<section id="t-act" class="tab">
+  <h2 class="t" style="margin-top:4px"><i data-lucide="image"></i>Galeri Kegiatan</h2>
+  <div id="actFilter" class="flex gap-2 overflow-x-auto pb-2" style="scrollbar-width:none"></div>
+  <div id="actList" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2"></div>
+  <h2 class="t"><i data-lucide="history"></i>Sejarah &amp; Filosofi Logo</h2>
+  <div class="card text-center"><img id="logo3" alt="Logo Mapala Arkara" class="w-32 h-32 rounded-full object-cover mx-auto border-4" style="border-color:var(--yel)" src="https://i.ibb.co/DH2mNw71/Save-Clip-App-342154505-209011668504750-8031241953731727761-n.jpg"><div class="font-extrabold mt-2">Logo Mapala Arkara</div><div class="mute">Ketuk tiap bagian untuk membaca maknanya</div></div><div id="hist"></div>
+</section>
+
+<!-- EDUKASI -->
+<section id="t-edu" class="tab">
+  <h2 class="t" style="margin-top:4px"><i data-lucide="recycle"></i>Panduan Pemilahan Sampah</h2>
+  <div class="grid grid-cols-2 gap-3" id="sortList"></div>
+  <h2 class="t"><i data-lucide="timer"></i>Estimasi Waktu Terurai</h2>
+  <div class="card" id="decomp"></div>
+  <h2 class="t"><i data-lucide="leaf"></i>7 Prinsip Leave No Trace</h2>
+  <div id="lnt"></div>
+</section>
+
+<!-- OPREC -->
+<section id="t-rec" class="tab">
+  <div class="card text-white border-0" style="background:linear-gradient(135deg,#e8872b,#c4651a)">
+    <div class="text-xs font-bold opacity-90">OPEN RECRUITMENT</div>
+    <div class="text-xl font-extrabold">Bergabung bersama Arkara</div>
+    <div class="text-sm opacity-95">Jelajah alam, jaga bumi, tumbuh bersama.</div>
+  </div>
+  <h2 class="t"><i data-lucide="clipboard-check"></i>Syarat Pendaftaran</h2>
+  <div class="card"><ul class="text-sm space-y-2" id="reqs"></ul></div>
+  <h2 class="t"><i data-lucide="route"></i>Alur Seleksi</h2>
+  <div class="tl" id="flow"></div>
+  <h2 class="t"><i data-lucide="help-circle"></i>FAQ</h2>
+  <div class="card" id="faq"></div>
+  <h2 class="t"><i data-lucide="pencil"></i>Formulir Pendaftaran</h2>
+  <div class="card">
+    <label>Nama Lengkap</label><input id="fNama" class="inp" placeholder="Nama sesuai KTM">
+    <label>NIM</label><input id="fNim" class="inp" inputmode="numeric" placeholder="Nomor induk mahasiswa">
+    <label>Jurusan / Fakultas</label><input id="fJur" class="inp">
+    <label>No. WhatsApp</label><input id="fHp" class="inp" inputmode="tel" placeholder="08xxxxxxxxxx">
+    <label>Alasan Bergabung</label><textarea id="fAlasan" class="inp" rows="3"></textarea>
+    <button class="btn o w-full mt-4" onclick="submitReg()"><i data-lucide="send" style="width:18px;height:18px"></i>Kirim via WhatsApp</button>
+  </div>
+  <h2 class="t"><i data-lucide="users"></i>Riwayat Pendaftar <span class="badge" id="regCount">0</span></h2>
+  <div class="card"><div id="regList" class="text-sm"></div>
+    <button class="btn g w-full mt-3" onclick="exportCSV()"><i data-lucide="download" style="width:18px;height:18px"></i>Export CSV</button></div>
+</section>
+
+<!-- PROFIL -->
+<section id="t-me" class="tab">
+  <div class="card text-center">
+    <img id="logo2" alt="" class="w-20 h-20 rounded-full object-cover mx-auto border-4" style="border-color:var(--yel)" src="https://i.ibb.co/DH2mNw71/Save-Clip-App-342154505-209011668504750-8031241953731727761-n.jpg">
+    <div class="font-extrabold text-lg mt-2">Mapala Arkara</div>
+    <div class="mute">Mahasiswa Pecinta Alam · Bandung</div>
+  </div>
+  <h2 class="t"><i data-lucide="phone"></i>Kontak &amp; Media Sosial</h2>
+  <div class="card text-sm space-y-3">
+    <div class="flex gap-3 items-center"><i data-lucide="mail" style="width:18px"></i><a href="mailto:mapalaarkara@gmail.com" style="text-decoration:underline">mapalaarkara@gmail.com</a></div>
+    <div class="flex gap-3 items-center"><i data-lucide="phone" style="width:18px"></i><span><a href="tel:089660948841" style="text-decoration:underline">089660948841</a> / <a href="tel:081573715400" style="text-decoration:underline">081573715400</a> (Telepon / WA)</span></div>
+    <div class="flex gap-3 items-center"><i data-lucide="instagram" style="width:18px"></i><a href="https://instagram.com/mapalaarkara" target="_blank" rel="noopener" style="text-decoration:underline">@mapalaarkara</a></div>
+    <div class="flex gap-3 items-start"><i data-lucide="map-pin" style="width:18px;flex:none"></i><span>Babakan Leunca Cimincrang, Kec. Gedebage, Kota Bandung, Jawa Barat 40614, Indonesia</span></div>
+  </div>
+  <h2 class="t"><i data-lucide="shield"></i>Mode Admin Sederhana</h2>
+  <div class="card" id="adminBox"></div>
+</section>
+</main>
+
+<nav id="nav"></nav>
+
+<script>
+"use strict";
+const WA="6289660948841"; // ganti dengan nomor WhatsApp panitia (format 62…)
+const PIN="1234";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+function icons(){try{window.lucide&&lucide.createIcons()}catch(e){}}
+function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2800)}
+
+/* ---------- Logo fallback ---------- */
+["logo","logo2","logo3"].forEach(i=>{$(i).onerror=function(){this.onerror=null;this.src="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#2f6b4a"/><path d="M6 52 24 22l10 16 8-12 16 26z" fill="#f2c14e"/></svg>')}});
+
+/* ---------- Tabs ---------- */
+const TABS=[["home","Beranda","home"],["act","Kegiatan","images"],["edu","Edukasi","recycle"],["rec","Oprec","user-plus"],["me","Profil","user"]];
+$("nav").innerHTML=TABS.map(t=>`<button data-t="${t[0]}"><i data-lucide="${t[2]}"></i><span>${t[1]}</span></button>`).join("");
+function show(id){
+  document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("on",s.id==="t-"+id));
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.t===id));
+  scrollTo({top:0,behavior:"smooth"});
+}
+$("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b)show(b.dataset.t)});
+
+/* ---------- Cuaca (Open-Meteo + fallback) ---------- */
+const WMO={0:["Cerah","☀️"],1:["Cerah berawan","🌤️"],2:["Berawan sebagian","⛅"],3:["Mendung","☁️"],45:["Berkabut","🌫️"],48:["Berkabut","🌫️"],51:["Gerimis","🌦️"],53:["Gerimis","🌦️"],55:["Gerimis lebat","🌧️"],61:["Hujan ringan","🌦️"],63:["Hujan sedang","🌧️"],65:["Hujan lebat","🌧️"],80:["Hujan lokal","🌦️"],81:["Hujan lokal","🌧️"],82:["Hujan deras","⛈️"],95:["Badai petir","⛈️"],96:["Badai petir","⛈️"],99:["Badai petir","⛈️"]};
+function paintW(w,src){const m=WMO[w.code]||["Berawan","⛅"];$("wTemp").textContent=Math.round(w.temp);$("wDesc").textContent=m[0];$("wIcon").textContent=m[1];$("wWind").textContent=Math.round(w.wind);$("wHum").textContent=Math.round(w.hum);$("wSrc").textContent=src}
+async function loadWeather(){
+  const cached=LS.get("arka_w",null);
+  if(cached)paintW(cached,"cache");
+  try{
+    const c=new AbortController(),to=setTimeout(()=>c.abort(),7000);
+    const r=await fetch("https://api.open-meteo.com/v1/forecast?latitude=-6.9175&longitude=107.6191&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FBangkok",{signal:c.signal});
+    clearTimeout(to);
+    if(!r.ok)throw 0;
+    const j=(await r.json()).current;
+    const w={temp:j.temperature_2m,hum:j.relative_humidity_2m,code:j.weather_code,wind:j.wind_speed_10m};
+    LS.set("arka_w",w);paintW(w,"live");
+  }catch(e){ if(!cached)paintW({temp:24,hum:78,code:2,wind:9},"data offline") }
+}
+
+/* ---------- Data awal ---------- */
+const CATS=["Semua","Pendakian","Konservasi","Pelatihan","Sosial"];
+const CI={Pendakian:["⛰️","linear-gradient(135deg,#2f6b4a,#8aa06a)"],Konservasi:["🌱","linear-gradient(135deg,#4f8a52,#b7c97a)"],Pelatihan:["🧗","linear-gradient(135deg,#7a7f78,#c9c6bb)"],Sosial:["🤝","linear-gradient(135deg,#e8872b,#f2c14e)"]};
+const DEF_NEWS=[{t:"Open Recruitment Dibuka!",d:"Pendaftaran anggota baru Arkara telah dibuka. Cek tab Oprec untuk syarat dan alur seleksi.",date:"2026-11-20"},{t:"Aksi Bersih Gunung",d:"Kita bersih-bersih jalur pendakian akhir bulan ini. Bawa tumbler dan sarung tangan sendiri.",date:"2026-11-15"}];
+const DEF_ACT=[{t:"Ekspedisi Gunung Gede",c:"Pendakian",date:"2026-08-17",d:"Pendakian bersama dalam rangka HUT Kemerdekaan, disertai pungut sampah di jalur."},{t:"Penanaman 500 Bibit",c:"Konservasi",date:"2026-06-05",d:"Aksi tanam pohon di hari lingkungan hidup bersama warga sekitar."},{t:"Diklat Panjat Tebing",c:"Pelatihan",date:"2026-04-12",d:"Pelatihan dasar vertical rescue dan teknik tali untuk anggota muda."},{t:"Bakti Sosial Desa Binaan",c:"Sosial",date:"2026-02-21",d:"Penyuluhan pengelolaan sampah dan bantuan perlengkapan sekolah."}];
+const HIST=[["Pendirian","Arkara didirikan oleh sekelompok mahasiswa pecinta alam dengan semangat menjaga rimba dan sesama."],["Diklatsar Pertama","Pendidikan dasar angkatan pertama menandai tradisi pembinaan anggota hingga kini."],["Ekspedisi Perdana","Pendakian lintas gunung pertama memperluas jejak dan jaringan antar-organisasi."],["Gerakan Konservasi","Program penanaman pohon dan bersih gunung menjadi agenda tahunan."],["Era Digital","Arkara meluncurkan ARKA sebagai portal informasi dan aksi untuk seluruh anggota."]];
+const SORT=[["🟢","Organik","Sisa makanan, daun, ranting. Bisa dikomposkan.","#2f6b4a"],["🟡","Anorganik","Plastik, kaleng, kertas, kaca. Bersihkan lalu daur ulang.","#d99a1b"],["🔴","B3","Baterai, lampu, obat kedaluwarsa. Serahkan ke tempat khusus.","#c0392b"],["🔵","Residu","Popok, puntung rokok, kemasan sachet. Buang ke TPA.","#2e6fa3"]];
+const DECOMP=[["🍌","Kulit pisang","2–5 minggu"],["📰","Kertas koran","2–5 bulan"],["🧦","Kaus kaki katun","1–5 tahun"],["🚬","Puntung rokok","1–5 tahun"],["🥤","Kantong plastik","10–20 tahun"],["🥫","Kaleng aluminium","80–200 tahun"],["🍼","Botol plastik","450 tahun"],["🪟","Botol kaca","±1 juta tahun"]];
+const LNT=[["Rencanakan dengan matang","Pelajari medan, cuaca, dan aturan area. Bawa perbekalan secukupnya."],["Gunakan jalur yang ada","Jangan buat jalur baru. Berkemah di lahan yang sudah terbuka."],["Bawa pulang sampahmu","Semua yang dibawa naik harus dibawa turun, termasuk sisa makanan."],["Tinggalkan apa adanya","Jangan petik tanaman atau ambil batu dan artefak sebagai suvenir."],["Minimalkan dampak api unggun","Gunakan kompor. Bila perlu api, pakai tempat yang sudah ada."],["Hormati satwa liar","Amati dari jauh, jangan beri makan, simpan makanan dengan rapat."],["Hormati sesama pengunjung","Jaga ketenangan, beri jalan, dan utamakan kenyamanan bersama."]];
+const REQ=["Mahasiswa aktif (S1/D3/D4)","Sehat jasmani dan rohani, surat sehat dari dokter","Mendapat izin orang tua/wali","Bersedia mengikuti seluruh rangkaian pendidikan dasar","Menyerahkan fotokopi KTM dan pas foto 3×4"];
+const FLOW=[["Pendaftaran","Isi formulir di aplikasi ini, pesan otomatis ke panitia."],["Seleksi Berkas","Panitia memeriksa kelengkapan dan kelayakan."],["Tes Fisik & Wawancara","Lari, push up, dan wawancara motivasi."],["Pengumuman","Hasil diumumkan lewat WhatsApp dan aplikasi."],["Pendidikan Dasar","Materi navigasi, survival, SAR, dan konservasi."]];
+const FAQ=[["Apakah harus punya pengalaman mendaki?","Tidak. Semua materi diajarkan dari dasar."],["Berapa biaya pendaftaran?","Hubungi panitia untuk rincian biaya terbaru."],["Apakah kegiatan mengganggu kuliah?","Jadwal diatur agar tidak bentrok dengan perkuliahan."],["Bolehkah perempuan mendaftar?","Tentu. Arkara terbuka untuk semua mahasiswa."]];
+
+let news=LS.get("arka_news",DEF_NEWS),acts=LS.get("arka_acts",DEF_ACT),regs=LS.get("arka_regs",[]),admin=false,cat="Semua";
+
+/* ---------- Render ---------- */
+function rNews(){
+  $("newsList").innerHTML=news.length?news.map((n,i)=>`<div class="card"><div class="flex justify-between gap-2"><div class="font-bold">${esc(n.t)}</div><span class="mute whitespace-nowrap">${esc(n.date)}</span></div><p class="text-sm mt-1" style="color:var(--mute)">${esc(n.d)}</p>${admin?`<button class="text-xs font-bold mt-2" style="color:#c0392b" onclick="delItem('news',${i})">Hapus</button>`:""}</div>`).join(""):`<div class="card mute">Belum ada pengumuman.</div>`;
+}
+function rActs(){
+  $("actFilter").innerHTML=CATS.map(c=>`<button class="chip ${c===cat?"on":""}" onclick="cat='${c}';rActs()">${c}</button>`).join("");
+  const l=acts.map((a,i)=>[a,i]).filter(x=>cat==="Semua"||x[0].c===cat);
+  $("actList").innerHTML=l.length?l.map(([a,i])=>{const s=CI[a.c]||CI.Pendakian;return `<div class="card !mb-0">${a.img?`<img src="${a.img}" alt="" class="rounded-xl mb-2 w-full object-cover" style="height:140px">`:`<div class="ph" style="background:${s[1]}">${s[0]}</div>`}<span class="badge">${esc(a.c)}</span><div class="font-bold mt-1">${esc(a.t)}</div><div class="mute">${esc(a.date)}</div><p class="text-sm mt-1" style="color:var(--mute)">${esc(a.d)}</p>${admin?`<button class="text-xs font-bold mt-2" style="color:#c0392b" onclick="delItem('acts',${i})">Hapus</button>`:""}</div>`}).join(""):`<div class="card mute">Belum ada kegiatan di kategori ini.</div>`;
+}
+function rStatic(){
+  $("hist").innerHTML=renderPhil();const _h=HIST.map(h=>`<div><div class="font-bold">${h[0]}</div><p class="text-sm" style="color:var(--mute)">${h[1]}</p></div>`).join("");
+  $("sortList").innerHTML=SORT.map(s=>`<div class="card !mb-0" style="border-top:4px solid ${s[3]}"><div class="text-3xl">${s[0]}</div><div class="font-bold mt-1">${s[1]}</div><p class="text-xs mt-1" style="color:var(--mute)">${s[2]}</p></div>`).join("");
+  $("decomp").innerHTML=DECOMP.map(d=>`<div class="flex items-center gap-3 py-2 border-b last:border-0" style="border-color:var(--line)"><span class="text-2xl">${d[0]}</span><span class="flex-1 text-sm font-semibold">${d[1]}</span><span class="badge">${d[2]}</span></div>`).join("");
+  $("lnt").innerHTML=LNT.map((l,i)=>`<div class="card flex gap-3"><div class="font-extrabold text-xl" style="color:var(--acc)">${i+1}</div><div><div class="font-bold text-sm">${l[0]}</div><p class="text-xs mt-1" style="color:var(--mute)">${l[1]}</p></div></div>`).join("");
+  $("reqs").innerHTML=REQ.map(r=>`<li class="flex gap-2"><span style="color:var(--acc)">✔</span>${r}</li>`).join("");
+  $("flow").innerHTML=FLOW.map(f=>`<div><div class="font-bold">${f[0]}</div><p class="text-sm" style="color:var(--mute)">${f[1]}</p></div>`).join("");
+  $("faq").innerHTML=FAQ.map(f=>`<details><summary>${f[0]}</summary><p class="text-sm mt-2" style="color:var(--mute)">${f[1]}</p></details>`).join("");
+}
+function rRegs(){
+  $("regCount").textContent=regs.length;
+  $("regList").innerHTML=regs.length?regs.slice().reverse().map(r=>`<div class="py-2 border-b" style="border-color:var(--line)"><b>${esc(r.nama)}</b> · ${esc(r.nim)}<div class="mute">${esc(r.jurusan)} · ${esc(r.waktu)}</div></div>`).join(""):`<div class="mute">Belum ada pendaftar tersimpan di perangkat ini.</div>`;
+}
+function rAdmin(){
+  $("adminTag").classList.toggle("hidden",!admin);
+  $("adminBox").innerHTML=admin?`
+   <div class="font-bold text-sm">Tambah Pengumuman</div>
+   <input id="nT" class="inp" placeholder="Judul"><textarea id="nD" class="inp" rows="2" placeholder="Isi pengumuman"></textarea>
+   <button class="btn w-full mt-2" onclick="addNews()">Tambah Pengumuman</button>
+   <div class="font-bold text-sm mt-5">Tambah Dokumentasi Kegiatan</div>
+   <input id="aT" class="inp" placeholder="Judul kegiatan">
+   <select id="aC" class="inp">${CATS.slice(1).map(c=>`<option>${c}</option>`).join("")}</select>
+   <input id="aDt" type="date" class="inp"><label>Foto dari galeri (opsional, otomatis dikompres)</label><input id="aF" type="file" accept="image/*" class="inp" onchange="prevImg(this)"><img id="aPrev" alt="" class="hidden rounded-xl mt-2 w-full object-cover" style="max-height:160px"><textarea id="aD" class="inp" rows="2" placeholder="Deskripsi singkat"></textarea>
+   <button class="btn w-full mt-2" onclick="addAct()">Tambah Kegiatan</button>
+   <button class="btn g w-full mt-4" onclick="admin=false;renderAll()">Keluar Mode Admin</button>`
+  :`<p class="mute">Masukkan PIN untuk menambah atau menghapus berita dan dokumentasi. Data tersimpan di perangkat ini (LocalStorage).</p>
+   <input id="pin" type="password" inputmode="numeric" maxlength="8" class="inp" placeholder="PIN admin">
+   <button class="btn w-full mt-2" onclick="login()"><i data-lucide="lock" style="width:18px;height:18px"></i>Masuk Mode Admin</button>`;
+  icons();
+}
+function renderAll(){rNews();rActs();rRegs();rAdmin()}
+
+/* ---------- Admin ---------- */
+function login(){ if($("pin").value===PIN){admin=true;renderAll();toast("Mode admin aktif")}else toast("PIN salah") }
+function today(){return new Date().toISOString().slice(0,10)}
+function addNews(){const t=$("nT").value.trim(),d=$("nD").value.trim();if(!t){return toast("Judul wajib diisi")}news.unshift({t,d,date:today()});LS.set("arka_news",news);renderAll();toast("Pengumuman ditambahkan")}
+let pending=null;
+function compress(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=rej;fr.onload=()=>{const im=new Image();im.onerror=rej;im.onload=()=>{const s=Math.min(1,800/im.width),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",0.65))};im.src=fr.result};fr.readAsDataURL(file)})}
+async function prevImg(i){pending=null;const p=$("aPrev");p.classList.add("hidden");const f=i.files[0];if(!f)return;try{pending=await compress(f);p.src=pending;p.classList.remove("hidden");toast("Foto dikompres: "+Math.round(pending.length*0.75/1024)+" KB")}catch(e){toast("Foto tidak bisa dibaca")}}
+function addAct(){const t=$("aT").value.trim();if(!t){return toast("Judul wajib diisi")}acts.unshift({t,c:$("aC").value,date:$("aDt").value||today(),d:$("aD").value.trim(),img:pending||""});if(!LS.set("arka_acts",acts)){acts.shift();return toast("Penyimpanan penuh. Hapus kegiatan lama atau pakai foto lain.")}pending=null;renderAll();toast("Kegiatan ditambahkan")}
+const PHIL=[["Sejarah & Makna Identitas",[["MAPALA","Singkatan dari Mahasiswa Pencinta Alam yang didirikan pada tanggal 12 Desember 1964, dipelopori oleh Soe Hok Gie.","🏔️"],["ARKARA","Memiliki arti “Menyala”.","🔥"],["Universitas Muhammadiyah Bandung","Institusi universitas yang menaungi serta bertanggung jawab atas organisasi.","🎓"]]],["Filosofi Elemen & Warna Logo",[["Lingkaran","Tali persaudaraan, kebersamaan, dan keakraban.","⭕"],["3 Gunung","Melambangkan 3 Kode Etik Pecinta Alam.","⛰️"],["Garis Bayang 3 Gunung","Di mana pun kita berpijak, ARKARA akan selalu ada untuk mengikuti.","👣"],["Garis Strip","Melambangkan awan, yang berarti mencari ilmu setinggi awan.","☁️"],["Matahari","Cahaya kehidupan Mapala ARKARA yang tak akan pernah padam dan selalu memberi kehangatan.","☀️"],["Warna Biru","Melambangkan laut, yang berarti luasnya wawasan.","🔵"],["Warna Hijau (pada 3 gunung)","Melambangkan bahwa Indonesia adalah negara yang dikelilingi hutan hijau tropis.","🟢"],["Warna Putih (pada lingkaran)","Melambangkan keikhlasan dan ketulusan.","⚪"],["Warna Hitam (pada garis bayang)","Melambangkan kekuatan, pengaruh baik, dan percaya diri.","⚫"]]]];
+function renderPhil(){return PHIL.map((g,gi)=>`<div class="font-extrabold text-sm mt-4 mb-2" style="color:var(--forest2)">${g[0]}</div>`+g[1].map((it,i)=>`<details class="card !mb-2 !py-1" ${gi===0&&i===0?"open":""}><summary class="flex items-center gap-2"><span class="text-lg">${it[2]}</span>${it[0]}</summary><p class="text-sm mt-2" style="color:var(--mute)">${it[1]}</p></details>`).join("")).join("")}
+function delItem(k,i){if(k==="news"){news.splice(i,1);LS.set("arka_news",news)}else{acts.splice(i,1);LS.set("arka_acts",acts)}renderAll()}
+
+/* ---------- Oprec ---------- */
+function submitReg(){
+  const r={nama:$("fNama").value.trim(),nim:$("fNim").value.trim(),jurusan:$("fJur").value.trim(),hp:$("fHp").value.trim(),alasan:$("fAlasan").value.trim(),waktu:new Date().toLocaleString("id-ID")};
+  if(!r.nama||!r.nim||!r.hp){return toast("Nama, NIM, dan No. WhatsApp wajib diisi")}
+  regs.push(r);LS.set("arka_regs",regs);rRegs();
+  const msg=`*PENDAFTARAN OPREC ARKARA*\n\nNama: ${r.nama}\nNIM: ${r.nim}\nJurusan: ${r.jurusan||"-"}\nWhatsApp: ${r.hp}\nAlasan: ${r.alasan||"-"}\n\nSalam lestari!`;
+  ["fNama","fNim","fJur","fHp","fAlasan"].forEach(i=>$(i).value="");
+  toast("Data tersimpan, membuka WhatsApp…");
+  try{window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank")}catch(e){toast("Gagal membuka WhatsApp")}
+}
+function exportCSV(){
+  if(!regs.length)return toast("Belum ada data pendaftar");
+  const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+  const csv="\uFEFF"+["Nama,NIM,Jurusan,WhatsApp,Alasan,Waktu"].concat(regs.map(r=>[r.nama,r.nim,r.jurusan,r.hp,r.alasan,r.waktu].map(q).join(","))).join("\r\n");
+  try{
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="pendaftar_arkara.csv";document.body.appendChild(a);a.click();a.remove();toast("File CSV diunduh");
+  }catch(e){}
+  try{navigator.clipboard.writeText(csv).then(()=>toast("CSV juga disalin ke clipboard"))}catch(e){}
+}
+
+/* ---------- Init ---------- */
+rStatic();renderAll();icons();show("home");loadWeather();
+/* Service worker: aktif hanya saat file dihosting (http/https) bersama sw.js */
+if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){addEventListener("load",()=>{try{navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}})}
+</script>
+</body>
+</html>

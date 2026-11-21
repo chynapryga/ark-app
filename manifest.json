@@ -1,0 +1,17 @@
+{
+  "name": "ARKA – Arkara Info & Aksi",
+  "short_name": "ARKA",
+  "description": "Portal informasi, edukasi lingkungan, dan kegiatan Mapala Arkara",
+  "lang": "id",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f1efe8",
+  "theme_color": "#1f4d36",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
